@@ -3,6 +3,7 @@
 
 class Q02
   OPS = ["+", "-", "*", "/", ""]
+  # OPS = ["*", ""] # 実はかけ算以外を使うと、必ず元の桁数より小さくなってしまうから、この2つでいいのだ
 
   def main
     (1000..9999).each do |num|
@@ -24,7 +25,7 @@ class Q02
       begin
         cleaned_formula = clean_formula(formula)
         if num_str.reverse == eval(cleaned_formula).to_s
-          puts cleaned_formula
+          puts "#{cleaned_formula} = #{eval(cleaned_formula)}"
           adapts.push(cleaned_formula)
         end
       rescue ZeroDivisionError
