@@ -6,7 +6,7 @@ class Q3
   CARDS_COUNT = 100
 
   def main
-    statuses = set_cards
+    statuses = Array.new(CARDS_COUNT, false)
     new_statuses = statuses.clone
 
     (2..CARDS_COUNT).each do |i|
@@ -30,14 +30,6 @@ class Q3
     end
 
     p answer
-  end
-
-  def set_cards
-    card_statuses = []
-    CARDS_COUNT.times do |i|
-      card_statuses[i] = false
-    end
-    card_statuses
   end
 end
 
