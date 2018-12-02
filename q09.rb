@@ -83,7 +83,7 @@ class Q09
   # あるマスへの移動パターン数は、そのマスの下と左の移動パターン数の合計であることを利用している
   # ２次元配列を１次元配列に見立ててるのでわかりにくい
   def beautiful_answer
-    boy, girl = 20, 10
+    boy, girl = MALE_MAX, FEMALE_MAX
     boy, girl = boy + 1, girl + 1
     ary = Array.new(boy * girl){0}
     ary[0] = 1
@@ -102,7 +102,7 @@ class Q09
 
   # ２次元配列で書いてみた 0.000084s
   def beautiful_answer_double
-    boy, girl = 20, 10
+    boy, girl = MALE_MAX, FEMALE_MAX
     arr = Array.new(boy + 1)
     arr = arr.map{ |arr| Array.new(girl + 1, 0) }
     arr[0][0] = 1
