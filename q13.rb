@@ -14,57 +14,41 @@
 # 37611
 
 # Memo
-# S - W = 1 , 1 <= W <= 8, 2 <= S <= 9
-# A + T = 10
+# S - W = 1 or 2, 1 <= W <= 8, 2 <= S <= 9
+# A + T = 8 or 10
 # E + A = 9
-# D + E + K < 10
-# 2R + T + 1 >= 10
+# D + E + K < 10 or D + E + K >= 20
 # R, W, T, S are not 0
 # A D E I K L R S T W の 10 文字
 
 class Q13
   def main
     all_num = (0..9).to_a
+    ans_arr = []
 
-    (1..8).each do |w|
-      s = w + 1
-      (0..9).each do |a|
-        t = 10 - a
-        e = 9 - a
+    all_num.permutation(6).each do |s, w, a, t, e, r|
+      next if s == 0 || w == 0 || t == 0 || r == 0
+      next if e + a != 9
+      next if a + t != 8 && a + t != 10
+      next if s - w != 1 && s - w != 2
 
-        used_num = [s, w, a, t, e]
-        next if used_num.uniq.count != 5
+      (all_num - [s, w, a, t, e, r]).permutation.each do |d, k, i, l|
+        next if (a + t == 8) && (d + e + k < 20)
+        next if (a + t == 10) && (d + e + k >= 10)
 
-        (1..9).each do |r|
-          next if used_num.include?(r)
-          next if 2 * r + t + 1 < 10
+        read = "#{r}#{e}#{a}#{d}".to_i
+        write = "#{w}#{r}#{i}#{t}#{e}".to_i
+        talk = "#{t}#{a}#{l}#{k}".to_i
+        skill = "#{s}#{k}#{i}#{l}#{l}".to_i
 
-          remain_num = all_num - used_num.clone.push(r)
-          remain_num.each do |d|
-            remain_num.each do |k|
-              next if d == k
-              next if d + e + k >= 10
-              remain_num2 = remain_num.select{ |num| num != d && num != k }
-
-              remain_num2.each do |l|
-                remain_num2.each do |i|
-                  next if i == l
-
-                  read = "#{r}#{e}#{a}#{d}".to_i
-                  write = "#{w}#{r}#{i}#{t}#{e}".to_i
-                  talk = "#{t}#{a}#{l}#{k}".to_i
-                  skill = "#{s}#{k}#{i}#{l}#{l}".to_i
-
-                  if read + write + talk == skill
-                    p [read, write, talk, skill]
-                  end
-                end
-              end
-            end
-          end
+        if read + write + talk == skill
+          ans_arr.push([read, write, talk, skill])
         end
       end
     end
+
+    pp ans_arr
+    p ans_arr.count
   end
 end
 
