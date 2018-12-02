@@ -32,7 +32,7 @@ class Q10
     search_max(roulette_arr, choices, start + 1, max)
   end
 
-  # 左端を減らし右端を増やす、という処理にすることで処理速度改善を狙える
+  # 左端を減らし右端を増やす、という処理にすることで演算が減り、処理速度改善を狙える
   # 0.00031s : 従来のやり方の約10分の1
   def search_max2(roulette_arr, choices)
     # self[start, length] : start 番目から length 個の要素を含む部分配列を返します
