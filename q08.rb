@@ -8,6 +8,7 @@ class Q08
     pos = { x: 0, y: 0 }
 
     answer = move(pos)
+    # p answer
     puts answer.count
   end
 
@@ -16,19 +17,20 @@ class Q08
     return if move_history.include?(pos)
     move_history_new = move_history.clone.push(pos.clone)
 
-    return ans_arr.push(move_history_new) if move_history.count == MOVE_MAX
+    return ans_arr.push(dir_history) if move_history.count == MOVE_MAX
 
     %w(u d l r).each do |dir|
       case dir
       when "u"
-        move({ x: pos[:x], y: pos[:y] - 1 }, move_history_new, dir_history.clone.push(dir), ans_arr)
+        new_pos = { x: pos[:x], y: pos[:y] - 1 }
       when "d"
-        move({ x: pos[:x], y: pos[:y] + 1 }, move_history_new, dir_history.clone.push(dir), ans_arr)
+        new_pos = { x: pos[:x], y: pos[:y] + 1 }
       when "l"
-        move({ x: pos[:x] - 1, y: pos[:y] }, move_history_new, dir_history.clone.push(dir), ans_arr)
+        new_pos = { x: pos[:x] - 1, y: pos[:y] }
       when "r"
-        move({ x: pos[:x] + 1, y: pos[:y] }, move_history_new, dir_history.clone.push(dir), ans_arr)
+        new_pos = { x: pos[:x] + 1, y: pos[:y] }
       end
+      move(new_pos, move_history_new, dir_history.clone.push(dir), ans_arr)
     end
 
     ans_arr
