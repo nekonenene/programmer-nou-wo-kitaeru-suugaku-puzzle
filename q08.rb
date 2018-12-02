@@ -20,15 +20,16 @@ class Q08
     return ans_arr.push(dir_history) if move_history.count == MOVE_MAX
 
     %w(u d l r).each do |dir|
+      new_pos = pos.clone
       case dir
       when "u"
-        new_pos = { x: pos[:x], y: pos[:y] - 1 }
+        new_pos[:y] -= 1
       when "d"
-        new_pos = { x: pos[:x], y: pos[:y] + 1 }
+        new_pos[:y] += 1
       when "l"
-        new_pos = { x: pos[:x] - 1, y: pos[:y] }
+        new_pos[:x] -= 1
       when "r"
-        new_pos = { x: pos[:x] + 1, y: pos[:y] }
+        new_pos[:x] += 1
       end
       move(new_pos, move_history_new, dir_history.clone.push(dir), ans_arr)
     end
