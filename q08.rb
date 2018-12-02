@@ -13,11 +13,12 @@ class Q08
   end
 
   def move(pos, move_history = [], dir_history = [], ans_arr = [])
-    return if move_history.count > MOVE_MAX
     return if move_history.include?(pos)
     move_history_new = move_history.clone.push(pos.clone)
 
-    return ans_arr.push(dir_history) if move_history.count == MOVE_MAX
+    # 最初の位置プラス移動箇所になることに注意
+    return if move_history_new.count > MOVE_MAX + 1
+    return ans_arr.push(dir_history) if move_history_new.count == MOVE_MAX + 1
 
     %w(u d l r).each do |dir|
       new_pos = pos.clone
