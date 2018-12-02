@@ -80,6 +80,8 @@ class Q09
   end
 
   # 書籍の解答 0.000104s
+  # あるマスへの移動パターン数は、そのマスの下と左の移動パターン数の合計であることを利用している
+  # ２次元配列を１次元配列に見立ててるのでわかりにくい
   def beautiful_answer
     boy, girl = 20, 10
     boy, girl = boy + 1, girl + 1
@@ -98,9 +100,28 @@ class Q09
     puts ary[-2] + ary[-boy - 1]
   end
 
+  # ２次元配列で書いてみた 0.000084s
+  def beautiful_answer_double
+    boy, girl = 20, 10
+    arr = Array.new(boy + 1)
+    arr = arr.map{ |arr| Array.new(girl + 1, 0) }
+    arr[0][0] = 1
+
+    (girl + 1).times{ |g|
+      (boy + 1).times{ |b|
+        if (b != g) && (boy - b != girl - g)
+          arr[b][g] += arr[b - 1][g] if b > 0
+          arr[b][g] += arr[b][g - 1] if g > 0
+        end
+      }
+    }
+
+    arr[boy][girl] = arr[boy - 1][girl] + arr[boy][girl - 1]
+  end
+
   def main
     start_time = Time.now
-    p add_person2
+    p beautiful_answer_double
     end_time = Time.now
     puts end_time - start_time
   end
