@@ -29,14 +29,15 @@ class Q12
   end
 
   def adapt?(num, prec, include_integer_part = true)
-    # WARN: 0.1234555e2 のような形式で出力されると決めつけている
-    str = BigMath::sqrt(BigDecimal.new(num.to_s), PREC).to_s
+    sqrt_ans = BigMath::sqrt(BigDecimal.new(num.to_s), PREC)
+    str = sprintf("%.#{prec}f", sqrt_ans)
+    divided_str = str.split(".")
 
     if include_integer_part
-      include_all_num?(str[2, prec])
+      str = divided_str[0] + divided_str[1][0, prec - divided_str[0].length]
+      include_all_num?(str)
     else
-      ignore_integers = str.gsub(/^.*e(.+)$/, '\1').to_i
-      include_all_num?(str[2 + ignore_integers, prec])
+      include_all_num?(divided_str[1])
     end
   end
 
