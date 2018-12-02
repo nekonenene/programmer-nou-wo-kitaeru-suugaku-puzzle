@@ -4,12 +4,33 @@ class Q09
   MALE_MAX = 20
   FEMALE_MAX = 10
 
+  # 86s
   def add_person(male_count = 0, female_count = 0, arr = [])
     if male_count == MALE_MAX && female_count == FEMALE_MAX
       reversed_arr = arr.reverse
       return 1 if validate(reversed_arr)
     end
     return 0 if male_count == female_count && male_count > 0
+    return 0 if male_count > MALE_MAX || female_count > FEMALE_MAX
+
+    counter = 0
+    %w(M F).each do |sex|
+      counter +=
+        if sex == "M"
+          add_person(male_count + 1, female_count, arr.clone.push(sex))
+        else
+          add_person(male_count, female_count + 1, arr.clone.push(sex))
+        end
+    end
+
+    counter
+  end
+
+  # ちょっとだけ改善 : 86s
+  def add_person2(male_count = 0, female_count = 0, arr = [])
+    return 1 if male_count == MALE_MAX && female_count == FEMALE_MAX
+    return 0 if male_count == female_count && male_count > 0
+    return 0 if MALE_MAX - male_count == FEMALE_MAX - female_count
     return 0 if male_count > MALE_MAX || female_count > FEMALE_MAX
 
     counter = 0
@@ -58,9 +79,30 @@ class Q09
     ans_arr
   end
 
+  # 書籍の解答 0.000104s
+  def beautiful_answer
+    boy, girl = 20, 10
+    boy, girl = boy + 1, girl + 1
+    ary = Array.new(boy * girl){0}
+    ary[0] = 1
+
+    girl.times{ |g|
+      boy.times{ |b|
+        if (b != g) && (boy - b != girl - g)
+          ary[b + boy * g] += ary[b - 1 + boy * g] if b > 0
+          ary[b + boy * g] += ary[b + boy * (g - 1)] if g > 0
+        end
+      }
+    }
+
+    puts ary[-2] + ary[-boy - 1]
+  end
+
   def main
-    answer = add_person
-    p answer
+    start_time = Time.now
+    p add_person2
+    end_time = Time.now
+    puts end_time - start_time
   end
 end
 
