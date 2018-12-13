@@ -11,11 +11,21 @@
 # 1, 2 段目とかで合流することはない
 class Q15
   def main
+    # 2.191652s
     start_time = Time.now
     puts resolve(4)
     puts resolve(10)
     puts resolve(20)
     puts (Time.now - start_time).to_s + "s"
+    puts
+
+    # 0.005227s
+    start_time = Time.now
+    puts resolve_memo(4)
+    puts resolve_memo(10)
+    puts resolve_memo(20)
+    puts (Time.now - start_time).to_s + "s"
+    puts
   end
 
   def resolve(steps)
@@ -52,6 +62,30 @@ class Q15
     end
 
     answer
+  end
+
+  # メモ化（一度計算したものを保存しておく方法）により高速な処理を可能にしたバージョン
+  def resolve_memo(steps)
+    @memo = {}
+
+    # a: Aさんの位置、最初は0段目にいて上がっていく
+    # b: Bさんの位置、最初は一番上の段にいて降りていく
+    def move(a = 0, b)
+      return @memo[[a, b]] if @memo.has_key?([a, b])
+      return @memo[[a, b]] = 0 if a > b # AさんがBよりも上に来ればおしまい
+      return @memo[[a, b]] = 1 if a == b # 同じ段に止まったら +1
+
+      counter = 0
+      (1..4).each do |da|
+        (1..4).each do |db|
+          counter += move(a + da, b - db) # 再帰的に探索
+        end
+      end
+
+      @memo[[a, b]] = counter
+    end
+
+    move(0, steps)
   end
 end
 
